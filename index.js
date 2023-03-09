@@ -22,7 +22,8 @@ exports.handler = async (event) => {
             break;
         case event.httpMethod === 'PATCH' && event.path === productPath:
             const requestBody = JSON.parse(event.body);
-            response = await editProduct(requestBody.productId, requestBody.updateKey, requestBody.updateValue);
+            // response = await editProduct(requestBody.productId, requestBody.updateKey, requestBody.updateValue);
+            response = await editProduct(requestBody, requestBody.updateKey, requestBody.updateValue);
             break;
         case event.httpMethod === 'DELETE' && event.path === productPath:
             response = await deleteProduct(JSON.parse(event.body).productId);
@@ -89,86 +90,102 @@ async function scanDynamoRecords(scanParams, itemArray) {
     } catch(error) {
       console.error('Get records: ', error);
     }
-  }
+}
 
-  async function createProduct(requestBody) {
+async function createProduct(requestBody) {
+  // validate product Id
+  if (!validateProductId(requestBody)){
+    return resourceResponse(404, 'Error : productId required and must be numeric.');
+  }
+  
+  //check if record exist
+  const findRecord = await getProduct(requestBody['productId'])
+  if (findRecord.body) {
+    if("productId" in JSON.parse(findRecord.body)){
+      return resourceResponse(404, 'Error : productId already exist.');
+    }
+  }
+    
+  const params = {
+    TableName: dynamodbTableName,
+    Item: requestBody
+  }
+  return await dynamodb.put(params).promise().then(() => {
+    const body = {
+      Operation: 'CREATE',
+      Message: 'SUCCESS',
+      Item: requestBody
+    }
+    return resourceResponse(200, body);
+  }, (error) => {
+    console.error('Create records: ', error);
+  })
+}
+  
+async function editProduct(requestBody, updateKey, updateValue) {
+  if (!validateProductId(requestBody)){
+    return resourceResponse(404, 'Error : productId required and must be numeric.');
+  }
+  const productId = requestBody.productId;
+  const params = {
+    TableName: dynamodbTableName,
+    Key: {
+      'productId': productId
+    },
+    UpdateExpression: `set ${updateKey} = :value`,
+    ExpressionAttributeValues: {
+      ':value': updateValue
+    },
+    ReturnValues: 'UPDATED_NEW'
+  }
+  return await dynamodb.update(params).promise().then((response) => {
+    const body = {
+      Operation: 'UPDATE',
+      Message: 'SUCCESS',
+      UpdatedAttributes: response
+    }
+    return resourceResponse(200, body);
+  }, (error) => {
+    console.error('Edit Record: ', error);
+  })
+}
+  
+async function deleteProduct(productId) {
+  const params = {
+    TableName: dynamodbTableName,
+    Key: {
+      'productId': productId
+    },
+    ReturnValues: 'ALL_OLD'
+  }
+  return await dynamodb.delete(params).promise().then((response) => {
+    const body = {
+      Operation: 'DELETE',
+      Message: 'SUCCESS',
+      Item: response
+    }
+    return resourceResponse(200, body);
+  }, (error) => {
+    console.error('Delete record : ', error);
+  })
+}
+  
+
+function validateProductId(requestBody) {
     if (!("productId" in requestBody)) {
-      return resourceResponse(404, 'Error : productId is required.');
+      return false;
     }
     
     if (isEmpty(requestBody['productId'])){
-      return resourceResponse(404, 'Error : productId value is required.');
+      return false;
     }
     
     if (isNaN(requestBody['productId'])) {
-      return resourceResponse(404, 'Error : productId supplied is not numeric.');
+      return false;
     }
     
     if (!isNumeric(parseInt(requestBody['productId']))) {
-      return resourceResponse(404, 'Error : productId must be numeric.');
+      return false;
     }
-    
-    const findRecord = getProduct(requestBody['productId'])
-    if("productId" in findRecord){
-      return resourceResponse(404, 'Error : productId already exist.');
-    }
-    
-    const params = {
-      TableName: dynamodbTableName,
-      Item: requestBody
-    }
-    return await dynamodb.put(params).promise().then(() => {
-      const body = {
-        Operation: 'CREATE',
-        Message: 'SUCCESS',
-        Item: requestBody
-      }
-      return resourceResponse(200, body);
-    }, (error) => {
-      console.error('Create records: ', error);
-    })
-  }
-  
-  async function editProduct(productId, updateKey, updateValue) {
-    const params = {
-      TableName: dynamodbTableName,
-      Key: {
-        'productId': productId
-      },
-      UpdateExpression: `set ${updateKey} = :value`,
-      ExpressionAttributeValues: {
-        ':value': updateValue
-      },
-      ReturnValues: 'UPDATED_NEW'
-    }
-    return await dynamodb.update(params).promise().then((response) => {
-      const body = {
-        Operation: 'UPDATE',
-        Message: 'SUCCESS',
-        UpdatedAttributes: response
-      }
-      return resourceResponse(200, body);
-    }, (error) => {
-      console.error('Edit Record: ', error);
-    })
-  }
-  
-  async function deleteProduct(productId) {
-    const params = {
-      TableName: dynamodbTableName,
-      Key: {
-        'productId': productId
-      },
-      ReturnValues: 'ALL_OLD'
-    }
-    return await dynamodb.delete(params).promise().then((response) => {
-      const body = {
-        Operation: 'DELETE',
-        Message: 'SUCCESS',
-        Item: response
-      }
-      return resourceResponse(200, body);
-    }, (error) => {
-      console.error('Delete record : ', error);
-    })
-  }
+    return true;
+}
