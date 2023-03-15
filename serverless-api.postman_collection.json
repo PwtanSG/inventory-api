@@ -44,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": \"111\",\r\n    \"productName\": \"Mango\",\r\n    \"qty\": 500\r\n}",
+					"raw": "{\r\n    \"productId\": \"10012\",\r\n    \"productName\": \"Rockmelon\",\r\n    \"qty\": 500\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -76,7 +76,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": \"1001\",\r\n    \"productName\": \"Fuji Apple\",\r\n    \"qty\": 501\r\n}",
+					"raw": "{\r\n    \"productId\": \"10001\",\r\n    \"productName\": \"Fuji Apple\",\r\n    \"qty\": 501\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -119,7 +119,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/product?productId=1003",
+					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/product?productId=10001",
 					"protocol": "https",
 					"host": [
 						"tru0g8ptbg",
@@ -135,7 +135,7 @@
 					"query": [
 						{
 							"key": "productId",
-							"value": "1003"
+							"value": "10001"
 						}
 					]
 				}
@@ -191,7 +191,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": \"1002\"\r\n}",
+					"raw": "{\r\n    \"productId\": \"10012\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
