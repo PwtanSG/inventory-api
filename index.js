@@ -1,4 +1,5 @@
 //for runtime node js 12.x
+const limitRecords = 50; 
 const AWS = require('aws-sdk');
 AWS.config.update({
     region: 'us-east-1'
@@ -25,6 +26,10 @@ exports.handler = async (event) => {
             // response = await editProduct(requestBody.productId, requestBody.updateKey, requestBody.updateValue);
             response = await editProduct(requestBody, requestBody.updateKey, requestBody.updateValue);
             break;
+        case event.httpMethod === 'PUT' && event.path === productPath:
+            // return resourceResponse(200, 'Put');
+            response = await updateProduct(JSON.parse(event.body));
+            break;
         case event.httpMethod === 'DELETE' && event.path === productPath:
             response = await deleteProduct(JSON.parse(event.body).productId);
             break;
@@ -38,7 +43,8 @@ function resourceResponse(statusCode, body) {
     return {
         statusCode: statusCode,
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*' //enable CORS
         },
         body: JSON.stringify(body)
     }
@@ -105,6 +111,16 @@ async function createProduct(requestBody) {
       return resourceResponse(404, 'Error : productId already exist.');
     }
   }
+
+  //check if record exist
+  const findAllRecords = await getAllProducts();
+  // return resourceResponse('200', findAllRecords);
+  if (findAllRecords.body){
+    const productList = JSON.parse(findAllRecords.body);
+    if (productList.products.length > limitRecords) {
+      return resourceResponse(200, 'Error : Exceed limits.');
+    } 
+  }
     
   const params = {
     TableName: dynamodbTableName,
@@ -121,7 +137,37 @@ async function createProduct(requestBody) {
     console.error('Create records: ', error);
   })
 }
+
+async function updateProduct(requestBody) {
+  // validate product Id
+  if (!validateProductId(requestBody)){
+    return resourceResponse(404, 'Error : productId required and must be numeric.');
+  }
   
+  //check if record exist
+  const findRecord = await getProduct(requestBody['productId'])
+  if (!findRecord.body) {
+    if("productId" in JSON.parse(findRecord.body)){
+      return resourceResponse(404, 'Error : productId not found.');
+    }
+  }
+    
+  const params = {
+    TableName: dynamodbTableName,
+    Item: requestBody
+  }
+  return await dynamodb.put(params).promise().then(() => {
+    const body = {
+      Operation: 'UPDATE',
+      Message: 'SUCCESS',
+      Item: requestBody
+    }
+    return resourceResponse(200, body);
+  }, (error) => {
+    console.error('Update records: ', error);
+  })
+}
+
 async function editProduct(requestBody, updateKey, updateValue) {
   if (!validateProductId(requestBody)){
     return resourceResponse(404, 'Error : productId required and must be numeric.');

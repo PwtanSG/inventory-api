@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": \"1003\",\r\n    \"updateKey\": \"productName\",\r\n    \"updateValue\": \"Avocado\"\r\n}",
+					"raw": "{\r\n    \"productId\": \"1004\",\r\n    \"updateKey\": \"qty\",\r\n    \"updateValue\": 89\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -45,6 +45,38 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"productId\": \"111\",\r\n    \"productName\": \"Mango\",\r\n    \"qty\": 500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/product",
+					"protocol": "https",
+					"host": [
+						"tru0g8ptbg",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"prod",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\": \"1001\",\r\n    \"productName\": \"Fuji Apple\",\r\n    \"qty\": 501\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
