@@ -44,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": \"10012\",\r\n    \"productName\": \"Rockmelon\",\r\n    \"qty\": 500\r\n}",
+					"raw": "{\r\n    \"productId\": \"10006\",\r\n    \"productName\": \"Red Apple\",\r\n    \"productImage\": \"redapple.png\",\r\n    \"description\": \"Cripsy and sweet apple from Japan fuji\",\r\n    \"qty\": 180\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,10 +52,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/product",
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/product",
 					"protocol": "https",
 					"host": [
-						"tru0g8ptbg",
+						"rirlckz043",
 						"execute-api",
 						"us-east-1",
 						"amazonaws",
@@ -70,13 +70,19 @@
 			"response": []
 		},
 		{
-			"name": "update product",
+			"name": "User login",
 			"request": {
-				"method": "PUT",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "DHvzZb0ntj7BwSFM1AbhN9csIhXtkUfh5RTVPHgH",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": \"10001\",\r\n    \"productName\": \"Fuji Apple\",\r\n    \"qty\": 501\r\n}",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"abcd1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -84,10 +90,127 @@
 					}
 				},
 				"url": {
-					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/product",
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/user/login",
 					"protocol": "https",
 					"host": [
-						"tru0g8ptbg",
+						"rirlckz043",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"prod",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "DHvzZb0ntj7BwSFM1AbhN9csIhXtkUfh5RTVPHgH",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Admin\",\r\n    \"email\": \"admin@inventory.com\",\r\n    \"username\": \"admin\",\r\n    \"password\": \"abcd1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/user/register",
+					"protocol": "https",
+					"host": [
+						"rirlckz043",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"prod",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User verify",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "DHvzZb0ntj7BwSFM1AbhN9csIhXtkUfh5RTVPHgH",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": {\r\n        \"username\": \"admin\",\r\n        \"name\": \"Admin\"\r\n    },\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzEyODk3NzM2LCJleHAiOjE3MTI5MDEzMzZ9._yX6iubiaLmcMeUOEjzecMuHp9BdEJ_lv3PfLfhE40o\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/user/verify",
+					"protocol": "https",
+					"host": [
+						"rirlckz043",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"prod",
+						"user",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update product",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "DHvzZb0ntj7BwSFM1AbhN9csIhXtkUfh5RTVPHgH",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\": \"13001\",\r\n    \"productName\": \"Orange 7\",\r\n    \"qty\": 501\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/product",
+					"protocol": "https",
+					"host": [
+						"rirlckz043",
 						"execute-api",
 						"us-east-1",
 						"amazonaws",
@@ -108,7 +231,13 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "DHvzZb0ntj7BwSFM1AbhN9csIhXtkUfh5RTVPHgH",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"productId\": \"1004\",\r\n    \"productName\": \"Grape\"\r\n}",
@@ -119,10 +248,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/product?productId=10001",
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/product?productId=11188",
 					"protocol": "https",
 					"host": [
-						"tru0g8ptbg",
+						"rirlckz043",
 						"execute-api",
 						"us-east-1",
 						"amazonaws",
@@ -135,7 +264,97 @@
 					"query": [
 						{
 							"key": "productId",
-							"value": "10001"
+							"value": "11188"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "/C:/Users/USER/Documents/course/aws/s3/test999.png"
+					},
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/pwt-bucket-s3/test99.png",
+					"protocol": "https",
+					"host": [
+						"tru0g8ptbg",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"prod",
+						"pwt-bucket-s3",
+						"test99.png"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "10001",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload image",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "DHvzZb0ntj7BwSFM1AbhN9csIhXtkUfh5RTVPHgH",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "/C:/temp/test1.png"
+					},
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/pwt-bucket-s3/test.png",
+					"protocol": "https",
+					"host": [
+						"rirlckz043",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"prod",
+						"pwt-bucket-s3",
+						"test.png"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "10001",
+							"disabled": true
 						}
 					]
 				}
@@ -149,7 +368,13 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "DHvzZb0ntj7BwSFM1AbhN9csIhXtkUfh5RTVPHgH",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -160,10 +385,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://tru0g8ptbg.execute-api.us-east-1.amazonaws.com/prod/products",
+					"raw": "https://rirlckz043.execute-api.us-east-1.amazonaws.com/prod/products",
 					"protocol": "https",
 					"host": [
-						"tru0g8ptbg",
+						"rirlckz043",
 						"execute-api",
 						"us-east-1",
 						"amazonaws",
