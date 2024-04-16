@@ -1,5 +1,5 @@
-//for runtime node js 12.x
-const limitRecords = 50;
+//for runtime node js 16.x
+
 // const { verify } = require('jsonwebtoken');
 const { getProduct, getAllProducts, createProduct, deleteProduct, editProduct, updateProduct } = require('./controller/inventoryController')
 const { register, login, verify } = require('./controller/userController')
