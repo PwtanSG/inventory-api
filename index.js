@@ -1,9 +1,10 @@
 //for runtime node js 16.x
-
+//api-key and token authorizer implemented in api-gateway
 // const { verify } = require('jsonwebtoken');
 const { getProduct, getAllProducts, createProduct, deleteProduct, editProduct, updateProduct } = require('./controller/inventoryController')
 const { register, login, verify } = require('./controller/userController')
 const { resourceResponse } = require('./utils/utils')
+// const { verifyToken } = require('./utils/auth')
 const productPath = '/product';
 const allProductsPath = '/products';
 const userPath = '/user'
@@ -13,7 +14,11 @@ const userVerify = '/verify'
 
 exports.handler = async (event) => {
   let response;
+  // const token = validateToken(event) 
   switch (true) {
+    case event.httpMethod === 'GET' && event.path === '/health':
+      response = resourceResponse(200, event)
+      break;
     //product inventory routes
     case event.httpMethod === 'GET' && event.path === allProductsPath:
       response = await getAllProducts();
@@ -55,3 +60,17 @@ exports.handler = async (event) => {
   }
   return response;
 }
+
+// function validateToken(event){
+//   const requestBody = JSON.parse(event.body);
+//   let result = false;
+//   const requestHeaders = event.headers;
+//   if (requestHeaders.Authorization){
+//   // if (requestHeaders.Authorization && requestHeaders.Authorization.startsWith('Bearer')){
+//     // const token = requestHeaders.Authorization.split(' ')[1];
+//     const token = requestHeaders.Authorization;
+//     const verified = verifyToken(requestBody.username, token)
+//     return verified.verified
+//   }
+//   return result
+// }
