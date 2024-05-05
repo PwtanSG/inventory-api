@@ -42,10 +42,11 @@ async function getProduct(productId) {
         }
     }
     return await dynamodb.get(params).promise().then((response) => {
-        if (response.item) {
+        if ('Item' in response) {
             return resourceResponse(200, response.Item);
+        } else {
+            return resourceResponse(404, response.Item);
         }
-        return resourceResponse(404, 'record not found ');
     }, (error) => {
         console.error('Error Get Product : ', error);
     });
