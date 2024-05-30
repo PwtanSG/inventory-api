@@ -3,6 +3,7 @@
 // const { verify } = require('jsonwebtoken');
 const { getProduct, getAllProducts, createProduct, deleteProduct, editProduct, updateProduct } = require('./controller/inventoryController')
 const { register, login, verify } = require('./controller/userController')
+const { getAllCategories } = require('./controller/categoryController')
 const { resourceResponse } = require('./utils/utils')
 // const { verifyToken } = require('./utils/auth')
 const productPath = '/product';
@@ -11,6 +12,7 @@ const userPath = '/user'
 const userLogin = '/login'
 const userRegister = '/register'
 const userVerify = '/verify'
+const allCategoriesPath = '/categories';
 
 exports.handler = async (event) => {
   let response;
@@ -55,6 +57,11 @@ exports.handler = async (event) => {
       const verifyBody = JSON.parse(event.body);
       response = await verify(verifyBody);
       break;
+
+    case event.httpMethod === 'GET' && event.path === allCategoriesPath:
+      response = await getAllCategories();
+      break;
+
     default:
       response = resourceResponse(404, '404 Not Found.');
   }
