@@ -12,7 +12,7 @@ async function getAllCategories() {
     }
     const categories = await scanDynamoRecords(params, []);
     const body = {
-        categories: categories
+        items: categories
     }
     return resourceResponse(200, body);
 }
